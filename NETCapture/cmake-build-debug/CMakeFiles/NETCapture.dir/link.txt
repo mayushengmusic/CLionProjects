@@ -1,0 +1,1 @@
+/usr/bin/c++   -g   CMakeFiles/NETCapture.dir/main.cpp.o  -o NETCapture  -L/usr/local/lib/mysql -Wl,-rpath,/usr/local/lib/mysql -lmysqlcppconn -lpthread -lpcap 

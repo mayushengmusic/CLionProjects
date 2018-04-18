@@ -1,0 +1,8 @@
+//
+// Created by Jaken on 2018/1/25.
+//
+
+#ifndef BLOCKCHAINDEMO_MINER_HPP
+#define BLOCKCHAINDEMO_MINER_HPP
+
+#endif //BLOCKCHAINDEMO_MINER_HPP

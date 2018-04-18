@@ -1,0 +1,1 @@
+/usr/bin/c++   -g   CMakeFiles/tinyspider.dir/src/findlink.cpp.o CMakeFiles/tinyspider.dir/src/main.cpp.o CMakeFiles/tinyspider.dir/src/linkbufformultithread.cpp.o  -o tinyspider -rdynamic -lpthread -lboost_system -lboost_thread -lboost_filesystem -lboost_date_time -lboost_regex 

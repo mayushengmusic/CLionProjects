@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/mayusheng/CLionProjects/TESTCRYPTOPP/SHA256.hpp
+string
+-
+cryptopp/eccrypto.h
+-
+cryptopp/hex.h
+-
+iostream
+-
+
+/Users/mayusheng/CLionProjects/TESTCRYPTOPP/ecdsa.hpp
+cryptopp/eccrypto.h
+-
+cryptopp/osrng.h
+-
+cryptopp/oids.h
+-
+cryptopp/files.h
+-
+sstream
+-
+unordered_map
+-
+
+/Users/mayusheng/CLionProjects/TESTCRYPTOPP/main.cpp
+iostream
+-
+random
+-
+SHA256.hpp
+/Users/mayusheng/CLionProjects/TESTCRYPTOPP/SHA256.hpp
+ecdsa.hpp
+/Users/mayusheng/CLionProjects/TESTCRYPTOPP/ecdsa.hpp
+

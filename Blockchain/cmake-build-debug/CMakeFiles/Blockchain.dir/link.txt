@@ -1,0 +1,1 @@
+/usr/bin/c++   -O3 -Wall  -rdynamic CMakeFiles/Blockchain.dir/main.cpp.o  -o Blockchain DNS/libdns.a PARSEDNS/libparsedns.a SERVER/libserver.a -lboost_system -lpthread PARSEDNS/libparsedns.a DNS/libdns.a 

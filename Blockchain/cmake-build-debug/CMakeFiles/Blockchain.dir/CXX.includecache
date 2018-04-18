@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jaken/CLionProjects/Blockchain/SERVER/udpserver.hpp
+iostream
+-
+boost/asio.hpp
+-
+boost/asio/executor_work_guard.hpp
+-
+boost/asio/io_context.hpp
+-
+
+/home/jaken/CLionProjects/Blockchain/main.cpp
+iostream
+-
+thread
+-
+SERVER/udpserver.hpp
+/home/jaken/CLionProjects/Blockchain/SERVER/udpserver.hpp
+

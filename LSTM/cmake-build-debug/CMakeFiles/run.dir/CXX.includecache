@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jaken/CLionProjects/LSTM/lstm/lstm.hpp
+iostream
+-
+../matrix/matrix.hpp
+/home/jaken/CLionProjects/LSTM/matrix/matrix.hpp
+
+/home/jaken/CLionProjects/LSTM/main.cpp
+iostream
+-
+matrix/matrix.hpp
+/home/jaken/CLionProjects/LSTM/matrix/matrix.hpp
+lstm/lstm.hpp
+/home/jaken/CLionProjects/LSTM/lstm/lstm.hpp
+
+/home/jaken/CLionProjects/LSTM/matrix/matrix.hpp
+cstddef
+-
+vector
+-
+random
+-
+functional
+-
+

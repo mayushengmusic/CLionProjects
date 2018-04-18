@@ -1,0 +1,12 @@
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/CMakeFiles/Blockchain.dir
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/DNS/CMakeFiles/rebuild_cache.dir
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/DNS/CMakeFiles/edit_cache.dir
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/DNS/CMakeFiles/dns.dir
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/PARSEDNS/CMakeFiles/rebuild_cache.dir
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/PARSEDNS/CMakeFiles/edit_cache.dir
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/PARSEDNS/CMakeFiles/parsedns.dir
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/SERVER/CMakeFiles/rebuild_cache.dir
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/SERVER/CMakeFiles/edit_cache.dir
+/home/jaken/CLionProjects/Blockchain/cmake-build-debug/SERVER/CMakeFiles/server.dir

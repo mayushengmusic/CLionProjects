@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jaken/CLionProjects/Blockchain/PARSEDNS/parsedns.hpp
+string
+-
+
+/home/jaken/CLionProjects/Blockchain/SERVER/udpserver.cpp
+udpserver.hpp
+/home/jaken/CLionProjects/Blockchain/SERVER/udpserver.hpp
+../PARSEDNS/parsedns.hpp
+/home/jaken/CLionProjects/Blockchain/PARSEDNS/parsedns.hpp
+
+/home/jaken/CLionProjects/Blockchain/SERVER/udpserver.hpp
+iostream
+-
+boost/asio.hpp
+-
+boost/asio/executor_work_guard.hpp
+-
+boost/asio/io_context.hpp
+-
+

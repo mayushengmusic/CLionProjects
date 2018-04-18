@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/nms.dir/main.cpp.o CMakeFiles/nms.dir/block.pb.cc.o  -o nms -lcryptopp -lboost_system -lboost_regex -lprotobuf -lboost_thread-mt 

@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/simpledns.dir/src/main.cpp.o CMakeFiles/simpledns.dir/src/buffer.cpp.o CMakeFiles/simpledns.dir/src/message.cpp.o CMakeFiles/simpledns.dir/src/qs.cpp.o CMakeFiles/simpledns.dir/src/rr.cpp.o  -o simpledns -lmysqlclient 

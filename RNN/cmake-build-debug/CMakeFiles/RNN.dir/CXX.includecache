@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/mayusheng/CLionProjects/RNN/GlobalMacro.hpp
+
+/Users/mayusheng/CLionProjects/RNN/huawei.hpp
+lstm_god.hpp
+/Users/mayusheng/CLionProjects/RNN/lstm_god.hpp
+limits
+-
+
+/Users/mayusheng/CLionProjects/RNN/lstm_god.hpp
+iostream
+-
+random
+-
+GlobalMacro.hpp
+/Users/mayusheng/CLionProjects/RNN/GlobalMacro.hpp
+
+/Users/mayusheng/CLionProjects/RNN/main.cpp
+huawei.hpp
+/Users/mayusheng/CLionProjects/RNN/huawei.hpp
+

@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/Monitor.dir/src/main.cpp.o CMakeFiles/Monitor.dir/src/network.cpp.o CMakeFiles/Monitor.dir/src/processcmdbypstream.cpp.o  -o Monitor -lboost_system -lpthread -lglog 

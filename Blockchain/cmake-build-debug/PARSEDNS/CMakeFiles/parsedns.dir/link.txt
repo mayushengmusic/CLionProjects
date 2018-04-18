@@ -1,0 +1,2 @@
+/usr/bin/ar qc libparsedns.a  CMakeFiles/parsedns.dir/parsedns.cpp.o
+/usr/bin/ranlib libparsedns.a

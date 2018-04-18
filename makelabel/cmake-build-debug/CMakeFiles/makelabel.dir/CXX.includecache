@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jaken/CLionProjects/makelabel/main.cpp
+iostream
+-
+string
+-
+queue
+-
+vector
+-
+dirent.h
+-
+cstring
+-
+fstream
+-
+regex
+-
+

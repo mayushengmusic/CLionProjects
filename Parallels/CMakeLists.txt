@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.1)
+project(Parallels)
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "-Wall -O3")
+set(SOURCE_FILES main.cpp thread_gurad.hpp scoped_thread.hpp accumulate.hpp safestack.hpp hierarchical_mutex.h packaged_task_example.hpp)
+add_executable(Parallels ${SOURCE_FILES})
+target_link_libraries(Parallels pthread)
+target_link_libraries(Parallels boost_thread)
+target_link_libraries(Parallels boost_system)

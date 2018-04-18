@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/fuckcode.dir/main.cpp.o  -o fuckcode -lpthread -lboost_system -lboost_filesystem -lcpp_redis -ltacopie 

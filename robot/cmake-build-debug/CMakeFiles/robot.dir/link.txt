@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/robot.dir/main.cpp.o  -o robot -lpthread -lboost_system -lboost_filesystem -lssl -lcrypto 

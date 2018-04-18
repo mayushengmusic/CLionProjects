@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jaken/CLionProjects/Monitor/src/include/network.hpp
+boost/asio.hpp
+-
+
+/home/jaken/CLionProjects/Monitor/src/include/processcmdbypstream.hpp
+string
+-
+
+/home/jaken/CLionProjects/Monitor/src/main.cpp
+iostream
+-
+glog/logging.h
+-
+include/processcmdbypstream.hpp
+/home/jaken/CLionProjects/Monitor/src/include/processcmdbypstream.hpp
+iostream
+-
+
+/home/jaken/CLionProjects/Monitor/src/network.cpp
+include/network.hpp
+/home/jaken/CLionProjects/Monitor/src/include/network.hpp
+glog/logging.h
+-
+iostream
+-
+
+/home/jaken/CLionProjects/Monitor/src/processcmdbypstream.cpp
+future
+-
+iostream
+-
+include/processcmdbypstream.hpp
+/home/jaken/CLionProjects/Monitor/src/include/processcmdbypstream.hpp
+pstreams/pstream.h
+-
+
