@@ -95,7 +95,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Application.tech">
-    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" EXPLICIT_BUILD_TARGET_NAME="all" />
+    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="tech" RUN_TARGET_NAME="tech" EXPLICIT_BUILD_TARGET_NAME="all" />
     <configuration name="tech" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="tech" TARGET_NAME="tech" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="tech" RUN_TARGET_NAME="tech" />
     <list>
       <item itemvalue="Application.Build All" />

@@ -3,6 +3,6 @@
 
 CMakeFiles/RNN.dir/main.cpp.o: ../GlobalMacro.hpp
 CMakeFiles/RNN.dir/main.cpp.o: ../huawei.hpp
-CMakeFiles/RNN.dir/main.cpp.o: ../lstm_god.hpp
+CMakeFiles/RNN.dir/main.cpp.o: ../lstm.hpp
 CMakeFiles/RNN.dir/main.cpp.o: ../main.cpp
 

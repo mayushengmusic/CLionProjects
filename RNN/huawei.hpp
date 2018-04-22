@@ -4,26 +4,14 @@
 
 #ifndef RNN_HUAWEI_HPP
 #define RNN_HUAWEI_HPP
-#include "lstm_god.hpp"
+#include "lstm.hpp"
 #include <limits>
+#include <algorithm>
 
 typedef std::vector<std::vector<int>> imat;
 
-double normalization(double x,double Mean,double Var,double Min,double Max){
-   double h_x=(x-Mean)/Var;
-   double h_max = (Max-Mean)/Var;
-   double h_min = (Min-Mean)/Var;
-   return h_x/(h_max-h_min);
-}
 
-double unnormalization(double x,double Mean,double Var,double Min,double Max){
-    double h_max = (Max-Mean)/Var;
-    double h_min = (Min-Mean)/Var;
-    return x*(h_max-h_min)*Var+Mean+0.5;
-
-}
-
-void maketrainningdata(imat &data,std::vector<mat> &input,std::vector<mat> &label){
+void maketrainningdata(mat &data,std::vector<mat> &input,std::vector<mat> &label){
     input.clear();label.clear();
 
     if(data.size()<=TIME_STEP)
@@ -68,88 +56,105 @@ void maketrainningdata(imat &data,std::vector<mat> &input,std::vector<mat> &labe
 }
 
 
-std::vector<int> forecast(imat &data,int days){
+double normalization(int x,int Max,int Min){
+
+    return 2.0*double(x-Min)/(double(Max-Min+ESPSILON))-1.0;
+}
+
+int unnormalization(double x,int Max,int Min){
+
+    return int((x+1.0)*double(Max-Min+ESPSILON)/2.0+double(Min)+0.5);
+}
+
+
+
+
+std::vector<int> forecast(imat &data,int interval,int days){
 
     if(data.empty())
         return std::vector<int>();
 
 
-    double Mean = 0.0;
-    double Var = 0.0;
-    double MaxNum = std::numeric_limits<double>::min();
-    double MinNum = std::numeric_limits<double>::max();
-
-    for(auto &y: data)
-        for(auto &x: y)
-        {
-                Mean+=double(x);
-
-                if(MaxNum<double(x))
-                    MaxNum=double(x);
-                if(MinNum>double(x))
-                    MinNum=double(x);
-
-        }
-
-    Mean = Mean/data.size();
+   std::vector<int> max_(data[0].size(),std::numeric_limits<int>::min());
+   std::vector<int> min_(data[0].size(),std::numeric_limits<int>::max());
 
 
-    for(auto &y: data)
-        for(auto &x: y)
-        {
-            Var += (double(x)-Mean)*(double(x)-Mean);
-        }
 
-    Var =Var/data.size();
+
+   for(int j=0;j<data.size();++j)
+   {
+
+       for(int i=0;i<data[j].size();++i)
+       {
+           if(data[j][i]>max_[i])
+                max_[i] = data[j][i];
+           if(data[j][i]<min_[i])
+                min_[i] = data[j][i];
+       }
+   }
+
+
+
+
+   mat normal_data;
+
+   normal_data.resize(data.size(),vec(data[0].size(),double(0.0)));
+
+   for(int j=0;j<data.size();++j)
+   {
+       for(int i=0;i<data[j].size();++i)
+       {
+            normal_data[j][i]=normalization(data[j][i],max_[i],min_[i]);
+       }
+   }
 
 
 
     std::vector<arr> inputs,labels;
 
-    maketrainningdata(data,inputs,labels);
+    maketrainningdata(normal_data,inputs,labels);
 
-    for(auto &x: labels)
-        for(auto &y: x)
-            for(auto &z: y)
-                z=normalization(z,Mean,Var,MinNum,MaxNum);
 
-    for(auto &x: inputs)
-        for(auto &y: x)
-            for(auto &z: y)
-                z=normalization(z,Mean,Var,MinNum,MaxNum);
 
     rnn lstm(data[0].size(),data[0].size(),TIME_STEP);
 
     for(int i=0;i<INTER*inputs.size();++i)
     {
-       static std::random_device gen;
+        static std::random_device gen;
         unsigned key = gen();
         lstm.backforward(inputs[key%inputs.size()],labels[key%labels.size()]);
-        //show(inputs[key%inputs.size()]);show(labels[key%labels.size()]);///
+        //show(inputs[key%inputs.size()]);
+        //show(labels[key%labels.size()]);
+        if(i%(inputs.size()*EPOLL)==0)
+            LEARNNINGRATE=LEARNNINGRATE*DESC;
+
     }
 
     arr in=inputs.back();
     arr out;
     std::vector<int> ans(data[0].size(),0);
 
-    for(int k=0;k<days;++k)
+    for(int k=0;k<days+interval;++k)
     {
-        //show(in);
+
         lstm.forward(in,out);
+
+
+        if(k>=interval)
         for(int i=0;i<ans.size();++i) {
-            //std::cout<<unnormalization(out.back()[i], MaxNum, MinNum)<<std::endl;
-            ans[i] += unnormalization(out.back()[i], Mean, Var,MinNum,MaxNum);
+
+            ans[i] +=unnormalization(out.back()[i],max_[i],min_[i]);
+
         }
-        //std::cout<<"--------"<<std::endl;
+
+
         std::reverse(in.begin(),in.end());
         in.pop_back();
         std::reverse(in.begin(),in.end());
-        /**
-        for(int i=0;i<out.back().size();++i)
-            out.back()[i]=(double)unnormalization(out.back()[i],MaxNum,MinNum);
-        **/
         in.push_back(out.back());
     }
+
+
 
 
 
