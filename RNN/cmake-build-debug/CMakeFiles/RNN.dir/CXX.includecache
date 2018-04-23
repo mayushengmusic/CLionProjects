@@ -6,17 +6,17 @@
 
 #IncludeRegexTransform: 
 
-/home/jaken/CLionProjects/RNN/GlobalMacro.hpp
+/Users/mayusheng/CLionProjects/RNN/GlobalMacro.hpp
 
-/home/jaken/CLionProjects/RNN/lstm.hpp
+/Users/mayusheng/CLionProjects/RNN/lstm.hpp
 iostream
 -
 random
 -
 GlobalMacro.hpp
-/home/jaken/CLionProjects/RNN/GlobalMacro.hpp
+/Users/mayusheng/CLionProjects/RNN/GlobalMacro.hpp
 
-/home/jaken/CLionProjects/RNN/main.cpp
+/Users/mayusheng/CLionProjects/RNN/main.cpp
 lstm.hpp
-/home/jaken/CLionProjects/RNN/lstm.hpp
+/Users/mayusheng/CLionProjects/RNN/lstm.hpp
 

@@ -1,3 +1,3 @@
-/home/jaken/CLionProjects/tech/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/jaken/CLionProjects/tech/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/jaken/CLionProjects/tech/cmake-build-debug/CMakeFiles/tech.dir
+/Users/mayusheng/CLionProjects/tech/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/mayusheng/CLionProjects/tech/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/mayusheng/CLionProjects/tech/cmake-build-debug/CMakeFiles/tech.dir

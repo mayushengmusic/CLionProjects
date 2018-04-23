@@ -21,45 +21,35 @@ static double myrand() {
     unsigned rad = gen();
 
     if (rad % 2 == 1)
-        return -(double(rad) - std::numeric_limits<unsigned>::min()) / double(std::numeric_limits<unsigned>::max());
+        return -double(rad%10000)/double(10000);
     else
-        return (double(rad) - std::numeric_limits<unsigned>::min()) / double(std::numeric_limits<unsigned>::max());
+        return double(rad%10000)/double(10000);
 }
 
 void initmat(mat &a) {
 
     for (int j = 0; j < a.size(); ++j)
         for (int i = 0; i < a[j].size(); ++i)
-            a[j][i] = myrand() * 0.001;
+            a[j][i] = myrand() * 0.0001;
 
 }
 
-void initvec(vec &v) {
-    for (int i = 0; i < v.size(); ++i)
-        v[i] = myrand() * 0.001;
 
-}
 
-static double sigmoid(double x) {
+inline  double sigmoid(double x) {
     return double(1.0) / (double(1.0) + exp(-x));
 }
 
-double d_sigmoid(double x) {
+inline double d_sigmoid(double x) {
     return x * (double(1.0) - x);
 }
 
-double d_tanh(double x) {
+inline double d_tanh(double x) {
     x = tanh(x);
     return double(1.0) - x * x;
 }
 
-double relu(double x){
-    return x>0?x:0;
-}
 
-double d_relu(double x){
-    return x>0?1:0;
-}
 
 void show(mat x) {
 
@@ -97,7 +87,7 @@ void show(vec x) {
 }
 
 
-mat mattanh(mat x) {
+inline mat mattanh(mat x) {
     for (int j = 0; j < x.size(); ++j)
         for (int i = 0; i < x[j].size(); ++i)
             x[j][i] = tanh(x[j][i]);
@@ -105,7 +95,7 @@ mat mattanh(mat x) {
     return x;
 }
 
-vec vectanh(vec x) {
+inline vec vectanh(vec x) {
 
     for (int i = 0; i < x.size(); ++i)
         x[i] = tanh(x[i]);
@@ -113,7 +103,7 @@ vec vectanh(vec x) {
 
 }
 
-mat matsigmoid(mat x) {
+inline mat matsigmoid(mat x) {
 
 
     for (int j = 0; j < x.size(); ++j)
@@ -123,7 +113,7 @@ mat matsigmoid(mat x) {
     return x;
 }
 
-vec vecsigmoid(vec x) {
+inline vec vecsigmoid(vec x) {
 
     for (int i = 0; i < x.size(); ++i)
         x[i] = sigmoid(x[i]);
@@ -131,21 +121,9 @@ vec vecsigmoid(vec x) {
 
 }
 
-vec vecrelu(vec x){
 
-    for (int i = 0; i < x.size(); ++i)
-        x[i] = relu(x[i]);
-    return x;
 
-}
-
-vec vec_d_relu(vec x){
-    for (int i = 0; i < x.size(); ++i)
-        x[i] = d_relu(x[i]);
-    return x;
-}
-
-mat mathadamard(mat a, mat b) {
+inline mat mathadamard(mat a, mat b) {
 
     if (a.empty() || b.empty())
         return mat();
@@ -160,7 +138,7 @@ mat mathadamard(mat a, mat b) {
     return a;
 }
 
-vec vechadamard(vec a, vec b) {
+inline vec vechadamard(vec a, vec b) {
 
     if (a.empty() || b.empty())
         return vec();
@@ -174,7 +152,7 @@ vec vechadamard(vec a, vec b) {
     return a;
 }
 
-mat operator+(mat a, mat b) {
+inline mat operator+(mat a, mat b) {
 
     if (a.empty() || b.empty())
         return mat();
@@ -189,6 +167,7 @@ mat operator+(mat a, mat b) {
     return a;
 }
 
+
 mat operator+(mat a, double b) {
 
     if (a.empty())
@@ -202,7 +181,7 @@ mat operator+(mat a, double b) {
     return a;
 }
 
-mat operator-(mat a, mat b) {
+inline mat operator-(mat a, mat b) {
 
     if (a.empty() || b.empty())
         return mat();
@@ -275,7 +254,7 @@ mat kroncker(vec a, vec b) {
 
 }
 
-mat operator*(double a, mat b) {
+inline mat operator*(double a, mat b) {
     for (int j = 0; j < b.size(); ++j)
         for (int i = 0; i < b[j].size(); ++i)
             b[j][i] = a * b[j][i];
@@ -343,7 +322,7 @@ mat operator*(vec a, mat b) {
     return a_ * b;
 }
 
-mat square(mat x) {
+inline mat square(mat x) {
     for (int j = 0; j < x.size(); ++j)
         for (int i = 0; i < x[j].size(); ++i)
             x[j][i] = x[j][i] * x[j][i];
@@ -412,7 +391,7 @@ vec veconecut(vec x) {
     return x;
 }
 
-vec operator+(vec a, vec b) {
+inline vec operator+(vec a, vec b) {
     if (a.size() != b.size())
         return vec();
 
@@ -424,16 +403,19 @@ vec operator+(vec a, vec b) {
     return a;
 }
 
-vec operator+(vec a, double b) {
+
+
+
+inline vec operator+(vec a, double b) {
     if (a.empty())
         return vec();
 
-    for (int i = 0; i < a.size(); ++i)
+    for(int i = 0; i < a.size(); ++i)
         a[i] += b;
     return a;
 }
 
-vec operator-(vec a, vec b) {
+inline vec operator-(vec a, vec b) {
     if (a.size() != b.size())
         return vec();
 
@@ -446,13 +428,6 @@ vec operator-(vec a, vec b) {
 }
 
 
-vec vecfabs(vec a) {
-
-    for (int i = 0; i < a.size(); ++i)
-        a[i] = fabs(a[i]);
-
-    return a;
-}
 
 
 class adam {
@@ -675,12 +650,13 @@ class rnn {
 public:
 
     rnn(size_t outputdim, size_t inputdim, size_t hiddendim, size_t timesteps) :
+            outputdim(outputdim), inputdim(inputdim), hiddendim(hiddendim), timesteps(timesteps),
             wa(hiddendim, vec(inputdim, 0.0)), ua(hiddendim, vec(hiddendim, 0.0)), ba(hiddendim, 1.0),
             wi(hiddendim, vec(inputdim, 0.0)), ui(hiddendim, vec(hiddendim, 0.0)), bi(hiddendim, 1.0),
             wf(hiddendim, vec(inputdim, 0.0)), uf(hiddendim, vec(hiddendim, 0.0)), bf(hiddendim, 1.0),
             wo(hiddendim, vec(inputdim, 0.0)), uo(hiddendim, vec(hiddendim, 0.0)), bo(hiddendim, 1.0),
-            wy(outputdim, vec(hiddendim, 0.0)), by(outputdim, 1.0),
-            outputdim(outputdim), inputdim(inputdim), hiddendim(hiddendim), timesteps(timesteps) {
+            wy(outputdim, vec(hiddendim, 0.0)), by(outputdim, 1.0)
+            {
         initmat(wa);
         initmat(ua);//initvec(ba);
         initmat(wi);
@@ -926,8 +902,7 @@ private:
 
     size_t outputdim, inputdim, hiddendim, timesteps;
 
-    mat wy;
-    vec by;
+
 
     mat wa, ua;
     vec ba;
@@ -954,6 +929,9 @@ private:
     arr delta_f;
     arr delta_o;
     arr delta_state;
+
+    mat wy;
+    vec by;
 
     mat delta_wy;
     vec delta_by;

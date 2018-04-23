@@ -46,37 +46,54 @@ void trainning(rnn & lstm){
 int main() {
 
 
-    rnn lstm(1,2,32,8);
+    rnn lstm(1,2,16,8);
 
     for(int i=0;i<INTER;++i)
     {
+
         trainning(lstm);
 
+        if(i%(64*64)==0)
+            LEARNNINGRATE = LEARNNINGRATE * DESC;
     }
 
-    int a = 32;
-    int b = 32;
 
-    arr inp(8,vec(2,0.0));
+    int right=0;
+    int all = 100;
+    for(int i=0;i<all;++i){
+        static std::random_device gen;
+        int a = gen()%64;
+        int b = gen()%64;
+        int c = a+b;
 
-    for(int i=0;i<7;++i){
-        inp[i][0]=double(a%2);
-        inp[i][1]=double(b%2);
-        a=a/2;
-        b=b/2;
+        arr inp(8,vec(2,0.0));
+
+        for(int i=0;i<7;++i){
+            inp[i][0]=double(a%2);
+            inp[i][1]=double(b%2);
+            a=a/2;
+            b=b/2;
+        }
+
+        arr out;
+
+        lstm.forward(inp,out);
+
+        double pre(0);
+
+        for(int j=0;j<out.size();++j)
+        {
+            pre+=floor(out[j][0]+0.5)*pow(2,j);
+        }
+
+        if(fabs(pre-double(c))<=ESPSILON)
+            right++;
+
+        std::cout<<c<<" "<<pre<<std::endl;
+
     }
 
-    show(inp);
-
-    arr out;
-
-
-    lstm.forward(inp,out);
-
-    show(out);
-
-
-
+    std::cout<<"正确率: "<<double(right)/double(all)*100;
 
 
 /*
