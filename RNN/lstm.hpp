@@ -30,13 +30,13 @@ void initmat(mat &a) {
 
     for (int j = 0; j < a.size(); ++j)
         for (int i = 0; i < a[j].size(); ++i)
-            a[j][i] = myrand() * 0.0001;
+            a[j][i] = myrand() * 0.001;
 
 }
 
 void initvec(vec &v) {
     for (int i = 0; i < v.size(); ++i)
-        v[i] = myrand() * 0.0001;
+        v[i] = myrand() * 0.001;
 
 }
 
@@ -51,6 +51,14 @@ double d_sigmoid(double x) {
 double d_tanh(double x) {
     x = tanh(x);
     return double(1.0) - x * x;
+}
+
+double relu(double x){
+    return x>0?x:0;
+}
+
+double d_relu(double x){
+    return x>0?1:0;
 }
 
 void show(mat x) {
@@ -121,6 +129,20 @@ vec vecsigmoid(vec x) {
         x[i] = sigmoid(x[i]);
     return x;
 
+}
+
+vec vecrelu(vec x){
+
+    for (int i = 0; i < x.size(); ++i)
+        x[i] = relu(x[i]);
+    return x;
+
+}
+
+vec vec_d_relu(vec x){
+    for (int i = 0; i < x.size(); ++i)
+        x[i] = d_relu(x[i]);
+    return x;
 }
 
 mat mathadamard(mat a, mat b) {
@@ -301,6 +323,26 @@ vec operator*(mat a, vec b) {
     return c;
 }
 
+
+mat transport(vec a) {
+
+    mat res(1, a);
+
+    return res;
+}
+
+mat operator*(vec a, mat b) {
+
+    if (b.size() != 1)
+        return mat();
+
+    mat a_(a.size(), vec(1, 0.0));
+    for (int i = 0; i < a_.size(); ++i)
+        a_[i][0] = a[i];
+
+    return a_ * b;
+}
+
 mat square(mat x) {
     for (int j = 0; j < x.size(); ++j)
         for (int i = 0; i < x[j].size(); ++i)
@@ -404,18 +446,39 @@ vec operator-(vec a, vec b) {
 }
 
 
+vec vecfabs(vec a) {
+
+    for (int i = 0; i < a.size(); ++i)
+        a[i] = fabs(a[i]);
+
+    return a;
+}
+
+
 class adam {
 public:
-    adam(size_t outputdim, size_t inputdim) :
-            wamt(outputdim, vec(inputdim, 0.0)), uamt(outputdim, vec(outputdim, 0.0)), bamt(outputdim, 1.0),
-            wimt(outputdim, vec(inputdim, 0.0)), uimt(outputdim, vec(outputdim, 0.0)), bimt(outputdim, 1.0),
-            wfmt(outputdim, vec(inputdim, 0.0)), ufmt(outputdim, vec(outputdim, 0.0)), bfmt(outputdim, 1.0),
-            womt(outputdim, vec(inputdim, 0.0)), uomt(outputdim, vec(outputdim, 0.0)), bomt(outputdim, 1.0),
-            wavt(outputdim, vec(inputdim, 0.0)), uavt(outputdim, vec(outputdim, 0.0)), bavt(outputdim, 1.0),
-            wivt(outputdim, vec(inputdim, 0.0)), uivt(outputdim, vec(outputdim, 0.0)), bivt(outputdim, 1.0),
-            wfvt(outputdim, vec(inputdim, 0.0)), ufvt(outputdim, vec(outputdim, 0.0)), bfvt(outputdim, 1.0),
-            wovt(outputdim, vec(inputdim, 0.0)), uovt(outputdim, vec(outputdim, 0.0)), bovt(outputdim, 1.0) {
+    adam(size_t outputdim, size_t inputdim,size_t hiddendim) :
+            wamt(hiddendim, vec(inputdim, 0.0)), uamt(hiddendim, vec(hiddendim, 0.0)), bamt(hiddendim, 0.0),
+            wimt(hiddendim, vec(inputdim, 0.0)), uimt(hiddendim, vec(hiddendim, 0.0)), bimt(hiddendim, 0.0),
+            wfmt(hiddendim, vec(inputdim, 0.0)), ufmt(hiddendim, vec(hiddendim, 0.0)), bfmt(hiddendim, 0.0),
+            womt(hiddendim, vec(inputdim, 0.0)), uomt(hiddendim, vec(hiddendim, 0.0)), bomt(hiddendim, 0.0),
+            wavt(hiddendim, vec(inputdim, 0.0)), uavt(hiddendim, vec(hiddendim, 0.0)), bavt(hiddendim, 0.0),
+            wivt(hiddendim, vec(inputdim, 0.0)), uivt(hiddendim, vec(hiddendim, 0.0)), bivt(hiddendim, 0.0),
+            wfvt(hiddendim, vec(inputdim, 0.0)), ufvt(hiddendim, vec(hiddendim, 0.0)), bfvt(hiddendim, 0.0),
+            wovt(hiddendim, vec(inputdim, 0.0)), uovt(hiddendim, vec(hiddendim, 0.0)), bovt(hiddendim, 0.0),
+            wymt(outputdim,vec(hiddendim,0.0)),wyvt(outputdim,vec(hiddendim,0.0)),bymt(outputdim,1.0),byvt(outputdim,0.0)
+    {
+    }
 
+    mat getadamdelta_wy(const mat &delta_wy){
+
+        wymt = BETA_1 * wymt + (1-BETA_1) * delta_wy;
+        wyvt = BETA_2 * wyvt + (1-BETA_2) *square(delta_wy);
+
+        mat wymt_ = (1.0/(1-BETA_1))*wymt;
+        mat wyvt_ = (1.0/(1-BETA_2))*wyvt;
+
+        return mathadamard(wymt_,(reciprocal(evolution(wyvt_)+ESPSILON)));
     }
 
     mat getadamdelta_wa(const mat &delta_wa) {
@@ -565,6 +628,20 @@ public:
 
     }
 
+    vec getadamdelta_by(const vec &delta_by){
+
+        bymt = BETA_1 * bymt + (1-BETA_1)*delta_by;
+        byvt = BETA_2 * byvt + (1-BETA_2)*square(delta_by);
+
+        vec bymt_ = (1.0/(1-BETA_1))*bymt;
+        vec byvt_ = (1.0/(1-BETA_2))*byvt;
+
+        return vechadamard(bymt_,(reciprocal(evolution(byvt_)+ESPSILON)));
+
+    }
+
+
+
 
 private:
 
@@ -587,6 +664,9 @@ private:
     mat wovt, uovt;
     vec bovt;
 
+    mat wymt, wyvt;
+    vec bymt,byvt;
+
 
 };
 
@@ -594,12 +674,13 @@ private:
 class rnn {
 public:
 
-    rnn(size_t outputdim, size_t inputdim, size_t timesteps) :
-            wa(outputdim, vec(inputdim, 0.0)), ua(outputdim, vec(outputdim, 0.0)), ba(outputdim, 1.0),
-            wi(outputdim, vec(inputdim, 0.0)), ui(outputdim, vec(outputdim, 0.0)), bi(outputdim, 1.0),
-            wf(outputdim, vec(inputdim, 0.0)), uf(outputdim, vec(outputdim, 0.0)), bf(outputdim, 1.0),
-            wo(outputdim, vec(inputdim, 0.0)), uo(outputdim, vec(outputdim, 0.0)), bo(outputdim, 1.0),
-            outputdim(outputdim), inputdim(inputdim), timesteps(timesteps) {
+    rnn(size_t outputdim, size_t inputdim, size_t hiddendim, size_t timesteps) :
+            wa(hiddendim, vec(inputdim, 0.0)), ua(hiddendim, vec(hiddendim, 0.0)), ba(hiddendim, 1.0),
+            wi(hiddendim, vec(inputdim, 0.0)), ui(hiddendim, vec(hiddendim, 0.0)), bi(hiddendim, 1.0),
+            wf(hiddendim, vec(inputdim, 0.0)), uf(hiddendim, vec(hiddendim, 0.0)), bf(hiddendim, 1.0),
+            wo(hiddendim, vec(inputdim, 0.0)), uo(hiddendim, vec(hiddendim, 0.0)), bo(hiddendim, 1.0),
+            wy(outputdim, vec(hiddendim, 0.0)), by(outputdim, 1.0),
+            outputdim(outputdim), inputdim(inputdim), hiddendim(hiddendim), timesteps(timesteps) {
         initmat(wa);
         initmat(ua);//initvec(ba);
         initmat(wi);
@@ -608,10 +689,12 @@ public:
         initmat(uf);//initvec(bf);
         initmat(wo);
         initmat(uo);//initvec(bo);
+        initmat(wy);
 
     }
 
-    void forward(arr &input, arr &outcopy) {
+    void forward(arr &input, arr &ycopy) {
+        y.clear();
         out.clear();
         a_.clear();
         i_.clear();
@@ -628,7 +711,7 @@ public:
         vec pre_out, pre_state;
         for (int i = 0; i < timesteps; ++i) {
             if (i == 0)
-                pre_out = vec(outputdim, 0.0);
+                pre_out = vec(hiddendim, 0.0);
 
             vec at = vectanh(wa * input[i] + ua * pre_out + ba);
 
@@ -644,15 +727,22 @@ public:
             o_.push_back(ot);
 
             if (i == 0)
-                pre_state = vec(outputdim, 0.0);
+                pre_state = vec(hiddendim, 0.0);
             vec statet = vechadamard(at, it) + vechadamard(ft, pre_state);
             state_.push_back(statet);
             pre_state = statet;
             vec outt = vechadamard(vectanh(statet), ot);
             pre_out = outt;
+
             out.push_back(outt);
+            y.push_back(vecsigmoid(wy * outt + by));
+
         }
-        outcopy = out;
+
+        if (&ycopy != &y)
+            ycopy = y;
+
+
     }
 
 
@@ -662,7 +752,7 @@ public:
         if (input.size() != timesteps || label.size() != timesteps)
             return;
 
-        forward(input, out);
+        forward(input, y);
         delta_a.clear();
         delta_f.clear();
         delta_i.clear();
@@ -675,17 +765,37 @@ public:
         delta_state.resize(timesteps);
 
 
+        delta_wy.clear();
+        delta_by.clear();
+
+
+        delta_by.resize(outputdim, 0.0);
+        delta_wy.resize(outputdim, vec(hiddendim, 0.0));
+
+
         double loss(0.0);
-        for (int j = 0; j < out.size(); ++j)
-            for (int i = 0; i < out[j].size(); ++i)
-                loss += (out[j][i] - label[j][i]) * (out[j][i] - label[j][i]) / 2.0;
+        for (int j = 0; j < y.size(); ++j)
+            for (int i = 0; i < y[j].size(); ++i)
+                loss += (y[j][i] - label[j][i]) * (y[j][i] - label[j][i]) / 2.0;
         std::cout << "LOSS: " << loss << std::endl;
 
 
-        vec dvalueoutt(outputdim, 0.0);
-        for (int i = timesteps - 1; i >= 0; --i) {
+        vec dvalueoutt(hiddendim, 0.0);
+        for (int i = int(timesteps - 1); i >= 0; --i) {
+
+//
+            vec mid = vechadamard(y[i]-label[i],vechadamard(y[i],veconecut(y[i])));
+            delta_wy = delta_wy +  mid * transport(out[i]);
+            delta_by = delta_by + mid;
+            //show(delta_wy);
+            //show(delta_by);
+
+//
+
+
+
             vec dvaluet;
-            dvaluet = out[i] - label[i];
+            dvaluet = transport(wy) * mid;//need update
 
             //show(dvaluet);
             vec delta_outt = dvaluet + dvalueoutt;
@@ -699,7 +809,7 @@ public:
 
             vec delta_it = vechadamard(vechadamard(delta_statet, a_[i]), vechadamard(i_[i], veconecut(i_[i])));
 
-            vec delta_ft = vec(outputdim, 0.0);
+            vec delta_ft = vec(hiddendim, 0.0);
             if (i != 0)
                 delta_ft = vechadamard(vechadamard(delta_statet, state_[i - 1]), vechadamard(f_[i], veconecut(f_[i])));
 
@@ -714,12 +824,14 @@ public:
             delta_i[i] = delta_it;
             delta_f[i] = delta_ft;
             delta_o[i] = delta_ot;
+
+
         }
 
-        mat delta_wa(outputdim, vec(inputdim, 0.0));
-        mat delta_wi(outputdim, vec(inputdim, 0.0));
-        mat delta_wf(outputdim, vec(inputdim, 0.0));
-        mat delta_wo(outputdim, vec(inputdim, 0.0));
+        mat delta_wa(hiddendim, vec(inputdim, 0.0));
+        mat delta_wi(hiddendim, vec(inputdim, 0.0));
+        mat delta_wf(hiddendim, vec(inputdim, 0.0));
+        mat delta_wo(hiddendim, vec(inputdim, 0.0));
 
 
         for (int i = 0; i < timesteps; ++i) {
@@ -731,10 +843,10 @@ public:
 
         //show(delta_wa),show(delta_wi),show(delta_wf),show(delta_wo);
 
-        mat delta_ua(outputdim, vec(outputdim, 0.0));
-        mat delta_ui(outputdim, vec(outputdim, 0.0));
-        mat delta_uf(outputdim, vec(outputdim, 0.0));
-        mat delta_uo(outputdim, vec(outputdim, 0.0));
+        mat delta_ua(hiddendim, vec(hiddendim, 0.0));
+        mat delta_ui(hiddendim, vec(hiddendim, 0.0));
+        mat delta_uf(hiddendim, vec(hiddendim, 0.0));
+        mat delta_uo(hiddendim, vec(hiddendim, 0.0));
 
 
         for (int i = 0; i < timesteps - 1; ++i) {
@@ -746,10 +858,10 @@ public:
 
         //show(delta_ua),show(delta_ui),show(delta_uf),show(delta_uo);
 
-        vec delta_ba(outputdim, 0.0);
-        vec delta_bi(outputdim, 0.0);
-        vec delta_bf(outputdim, 0.0);
-        vec delta_bo(outputdim, 0.0);
+        vec delta_ba(hiddendim, 0.0);
+        vec delta_bi(hiddendim, 0.0);
+        vec delta_bf(hiddendim, 0.0);
+        vec delta_bo(hiddendim, 0.0);
 
         for (int i = 0; i < timesteps; ++i) {
             delta_ba = delta_ba + delta_a[i];
@@ -762,29 +874,31 @@ public:
 
 
         /* BASE SDG VERSION
-        wa=wa-LEARNNINGRATE*delta_wa;
-        wi=wi-LEARNNINGRATE*delta_wi;
-        wf=wf-LEARNNINGRATE*delta_wf;
-        wo=wo-LEARNNINGRATE*delta_wo;
+        wa = wa - LEARNNINGRATE * delta_wa;
+        wi = wi - LEARNNINGRATE * delta_wi;
+        wf = wf - LEARNNINGRATE * delta_wf;
+        wo = wo - LEARNNINGRATE * delta_wo;
 
 
+        ua = ua - LEARNNINGRATE * delta_ua;
+        ui = ui - LEARNNINGRATE * delta_ui;
+        uf = uf - LEARNNINGRATE * delta_uf;
+        uo = uo - LEARNNINGRATE * delta_uo;
 
 
-        ua=ua-LEARNNINGRATE*delta_ua;
-        ui=ui-LEARNNINGRATE*delta_ui;
-        uf=uf-LEARNNINGRATE*delta_uf;
-        uo=uo-LEARNNINGRATE*delta_uo;
+        ba = ba - LEARNNINGRATE * delta_ba;
+        bi = bi - LEARNNINGRATE * delta_bi;
+        bf = bf - LEARNNINGRATE * delta_bf;
+        bo = bo - LEARNNINGRATE * delta_bo;
 
+        wy = wy - LEARNNINGRATE * delta_wy;
 
-        ba = ba -LEARNNINGRATE*delta_ba;
-        bi = bi -LEARNNINGRATE*delta_bi;
-        bf = bf -LEARNNINGRATE*delta_bf;
-        bo = bo -LEARNNINGRATE*delta_bo;
+        by = by - LEARNNINGRATE * delta_by;
         */
 
         //SDG WITH ADAM
 
-        static adam adammachine(outputdim, inputdim);
+        static adam adammachine(outputdim, inputdim, hiddendim);
 
         wa = wa - LEARNNINGRATE * adammachine.getadamdelta_wa(delta_wa);
         wi = wi - LEARNNINGRATE * adammachine.getadamdelta_wi(delta_wi);
@@ -803,12 +917,17 @@ public:
         bf = bf - LEARNNINGRATE * adammachine.getadamdelta_bf(delta_bf);
         bo = bo - LEARNNINGRATE * adammachine.getadamdelta_bo(delta_bo);
 
+        wy = wy - LEARNNINGRATE * adammachine.getadamdelta_wy(delta_wy);
+        by = by - LEARNNINGRATE * adammachine.getadamdelta_by(delta_by);
     }
 
 
 private:
 
-    size_t outputdim, inputdim, timesteps;
+    size_t outputdim, inputdim, hiddendim, timesteps;
+
+    mat wy;
+    vec by;
 
     mat wa, ua;
     vec ba;
@@ -819,7 +938,11 @@ private:
     mat wo, uo;
     vec bo;
 
+
     arr out;
+    arr y;
+
+
     arr a_;
     arr i_;
     arr f_;
@@ -831,6 +954,9 @@ private:
     arr delta_f;
     arr delta_o;
     arr delta_state;
+
+    mat delta_wy;
+    vec delta_by;
 
 
 };

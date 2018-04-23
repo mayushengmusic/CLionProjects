@@ -8,14 +8,6 @@
 
 /home/jaken/CLionProjects/RNN/GlobalMacro.hpp
 
-/home/jaken/CLionProjects/RNN/huawei.hpp
-lstm.hpp
-/home/jaken/CLionProjects/RNN/lstm.hpp
-limits
--
-algorithm
--
-
 /home/jaken/CLionProjects/RNN/lstm.hpp
 iostream
 -
@@ -25,6 +17,6 @@ GlobalMacro.hpp
 /home/jaken/CLionProjects/RNN/GlobalMacro.hpp
 
 /home/jaken/CLionProjects/RNN/main.cpp
-huawei.hpp
-/home/jaken/CLionProjects/RNN/huawei.hpp
+lstm.hpp
+/home/jaken/CLionProjects/RNN/lstm.hpp
 

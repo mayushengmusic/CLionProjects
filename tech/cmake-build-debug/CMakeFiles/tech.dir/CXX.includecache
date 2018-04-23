@@ -9,4 +9,8 @@
 /home/jaken/CLionProjects/tech/main.cpp
 iostream
 -
+vector
+-
+cmath
+-
 
