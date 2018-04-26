@@ -6,17 +6,33 @@
 
 #IncludeRegexTransform: 
 
-/Users/mayusheng/CLionProjects/RNN/GlobalMacro.hpp
+/home/jaken/CLionProjects/RNN/GlobalMacro.hpp
 
-/Users/mayusheng/CLionProjects/RNN/lstm.hpp
+/home/jaken/CLionProjects/RNN/datapreprocess.hpp
+lstm.hpp
+/home/jaken/CLionProjects/RNN/lstm.hpp
+
+/home/jaken/CLionProjects/RNN/huawei.hpp
+lstm.hpp
+/home/jaken/CLionProjects/RNN/lstm.hpp
+datapreprocess.hpp
+/home/jaken/CLionProjects/RNN/datapreprocess.hpp
+limits
+-
+algorithm
+-
+
+/home/jaken/CLionProjects/RNN/lstm.hpp
 iostream
 -
 random
 -
 GlobalMacro.hpp
-/Users/mayusheng/CLionProjects/RNN/GlobalMacro.hpp
+/home/jaken/CLionProjects/RNN/GlobalMacro.hpp
 
-/Users/mayusheng/CLionProjects/RNN/main.cpp
-lstm.hpp
-/Users/mayusheng/CLionProjects/RNN/lstm.hpp
+/home/jaken/CLionProjects/RNN/main.cpp
+fstream
+-
+huawei.hpp
+/home/jaken/CLionProjects/RNN/huawei.hpp
 

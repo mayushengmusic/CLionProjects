@@ -1,138 +1,48 @@
-#include "lstm.hpp"
-
-
-void int2str(int a,int b,rnn &lstm){
-
-    arr inp(8,vec(2,0.0));
-    auto c = a+b;
-
-    for(int i=0;i<7;++i){
-        inp[i][0]=double(a%2);
-        inp[i][1]=double(b%2);
-        a=a/2;
-        b=b/2;
-    }
-
-
-
-    arr lab(8,vec(1,0.0));
-
-
-    for(int i=0;i<7;++i){
-        lab[i][0]=double(c%2);
-        c=c/2;
-    }
-
-
-
-    lstm.backforward(inp,lab);
-
-
-}
-
-
-void trainning(rnn & lstm){
-    static std::random_device gen;
-    int a = gen()%64;
-    int b = gen()%64;
-
-    int2str(a,b,lstm);
-
-}
-
+#include <fstream>
+#include "huawei.hpp"
 
 
 
 int main() {
 
 
-    rnn lstm(1,2,16,8);
-
-    for(int i=0;i<INTER;++i)
-    {
-
-        trainning(lstm);
-
-        if(i%(64*64)==0)
-            LEARNNINGRATE = LEARNNINGRATE * DESC;
-    }
 
 
-    int right=0;
-    int all = 100;
-    for(int i=0;i<all;++i){
-        static std::random_device gen;
-        int a = gen()%64;
-        int b = gen()%64;
-        int c = a+b;
+    std::ifstream file("/home/jaken/data.txt");
 
-        arr inp(8,vec(2,0.0));
 
-        for(int i=0;i<7;++i){
-            inp[i][0]=double(a%2);
-            inp[i][1]=double(b%2);
-            a=a/2;
-            b=b/2;
+    imat test(45,ivec(5,0));
+
+    for(int j=0;j<test.size();++j)
+        for(int i=0;i<test[i].size();++i) {
+            file >> test[j][i];
+
+
         }
 
-        arr out;
 
-        lstm.forward(inp,out);
 
-        double pre(0);
 
-        for(int j=0;j<out.size();++j)
-        {
-            pre+=floor(out[j][0]+0.5)*pow(2,j);
-        }
 
-        if(fabs(pre-double(c))<=ESPSILON)
-            right++;
+  auto x = forecast(test,3,6);
+    for(auto &z: x)
+        std::cout<<" "<<z;
 
-        std::cout<<c<<" "<<pre<<std::endl;
+    std::cout<<std::endl;
 
-    }
 
-    std::cout<<"正确率: "<<double(right)/double(all)*100;
 
 
 /*
-    imat test;
+    adam test(1,1,3);
+    mat a(3,vec(3));
+    for(int i=0;i<3;++i)
+        for(int j=0;j<3;++j)
+            a[i][j]=myrand();
 
-    for (int i = 0; i < 8; ++i) {
-        std::vector<int> temp;
-        for (int k = 0; k < 1; k++)
-            temp.push_back((i)%7);
-        test.push_back(temp);
+    a=test.getadamdelta_ua(a);
 
-    }
-
-    auto x = forecast(test, 0, 3);
-    for (auto e: x) {
-        std::cout << e << std::endl;
-    }
-*/
-
-/*
-
-    rnn lstm(1,1,100,3);
-    arr input{{0.1},{0.2},{0.3}};
-    arr label{{0.1},{0.3},{0.6}};
-    for(int i=0;i<INTER;++i) {
-        lstm.backforward(input, label);
-        if(i%EPOLL==0)
-        LEARNNINGRATE=LEARNNINGRATE*DESC;
-    }
-
-
-    arr out;
-    arr in{{0.1},{0.2},{0.3}};
-    lstm.forward(in,out);
-
-    for(auto &y: out)
-        for(auto &x: y)
-            std::cout<<x<<" ";
-
+    show(a);
 
 */
 
